@@ -1,3 +1,5 @@
+//some sprites taken from phaser.io
+//some sprites from https://github.com/ansimuz/getting-started-with-phaser
 var config = {
     type: Phaser.AUTO,
     width: 800,
@@ -19,6 +21,7 @@ var enimies = [];
 var randomY = Phaser.Math.Between(0, config.height);
 var scoreField;
 var score = 0;
+var activeWords = [];
 function preload() {
     this.load.image('background', 'images/Backgrounds/farback.gif');
     this.load.spritesheet('player', 'images/Ship/Spritesheet_64x29.png', {
@@ -46,7 +49,6 @@ function create() {
     this.add.image(0, 0, 'background');
     randomY = Phaser.Math.Between(0, config.height - 150);
     ufoShip = this.add.sprite(800, randomY, 'enemy');
-    ufoShip.word = 'BigWord';
     fancyEnemy = this.add.sprite(800, randomY + 50, 'fancyEnemy');
     fancyEnemy2 = this.add.sprite(800, randomY + 20, 'fancyEnemy2');
     fancyEnemy3 = this.add.sprite(800, randomY - 40, 'fancyEnemy3');
@@ -91,7 +93,12 @@ function create() {
     fancyEnemy.anims.play('flyFancy');
     fancyEnemy2.anims.play('flyFancy2');
     fancyEnemy3.anims.play('flyFancy3');
+    assignWord(ufoShip);
+    assignWord(fancyEnemy);
+    assignWord(fancyEnemy2);
+    assignWord(fancyEnemy3);
     console.log(ufoShip);
+    console.log(fancyEnemy);
 }
 function update() {
     randomY = Phaser.Math.Between(0, config.height);
@@ -107,6 +114,22 @@ function moveShips(ship, speed) {
     } else {
         ship.x = 800;
         ship.y = randomY;
+    }
+}
+function assignWord(ship) {
+    randomWordIndex = Math.floor(Math.random() * words.length - 1);
+    for (word in activeWords) {
+        while (activeWords[word][0] === words[randomWordIndex][0]) {
+            console.log('active word 0: ', activeWords[word][0]);
+            console.log('words word 0: ', words[randomWordIndex][0]);
+            randomWordIndex += 1;
+        }
+        ship.word = words[randomWordIndex];
+        activeWords.push(words[randomWordIndex]);
+    }
+    if (activeWords.length === 0) {
+        ship.word = words[randomWordIndex];
+        activeWords.push(words[randomWordIndex]);
     }
 }
 var game = new Phaser.Game(config);
