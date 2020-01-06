@@ -17,6 +17,8 @@ var config = {
 var player;
 var enimies = [];
 var randomY = Phaser.Math.Between(0, config.height);
+var scoreField;
+var score = 0;
 function preload() {
     this.load.image('background', 'images/Backgrounds/farback.gif');
     this.load.spritesheet('player', 'images/Ship/Spritesheet_64x29.png', {
@@ -43,12 +45,17 @@ function preload() {
 function create() {
     this.add.image(0, 0, 'background');
     randomY = Phaser.Math.Between(0, config.height - 150);
-    enemies = this.add.sprite(800, randomY, 'enemy');
+    ufoShip = this.add.sprite(800, randomY, 'enemy');
+    ufoShip.word = 'BigWord';
     fancyEnemy = this.add.sprite(800, randomY + 50, 'fancyEnemy');
     fancyEnemy2 = this.add.sprite(800, randomY + 20, 'fancyEnemy2');
     fancyEnemy3 = this.add.sprite(800, randomY - 40, 'fancyEnemy3');
     // this.add.image(25, 150, 'player');
     player = this.add.sprite(25, 150, 'player');
+    scoreField = this.add.text(10, 10, '', {
+        font: '24px Arial',
+        fill: '#FFFFFF'
+    });
     this.anims.create({
         key: 'fly',
         frames: this.anims.generateFrameNumbers('player'),
@@ -80,17 +87,19 @@ function create() {
         repeat: -1
     });
     player.anims.play('fly');
-    enemies.anims.play('flyEnemy');
+    ufoShip.anims.play('flyEnemy');
     fancyEnemy.anims.play('flyFancy');
     fancyEnemy2.anims.play('flyFancy2');
     fancyEnemy3.anims.play('flyFancy3');
+    console.log(ufoShip);
 }
 function update() {
     randomY = Phaser.Math.Between(0, config.height);
-    moveShips(enemies, 0.5);
+    moveShips(ufoShip, 0.5);
     moveShips(fancyEnemy, 0.7);
     moveShips(fancyEnemy2, 0.9);
     moveShips(fancyEnemy3, 0.4);
+    scoreField.setText('Score : ' + score);
 }
 function moveShips(ship, speed) {
     if (ship.x > -40) {
