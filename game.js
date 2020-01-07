@@ -96,27 +96,16 @@ function create() {
     fancyEnemy2.anims.play('flyFancy2');
     fancyEnemy3.anims.play('flyFancy3');
     assignWord(ufoShip);
-    console.log(ufoShip);
-    // var text = game.add.text(0, 0, ufoShip.word, {
-    //     font: '12px Arial',
-    //     fill: '#FFFFF'
-    // });
-    // console.log(text);
-    // this.ufoShip.addChild(text);
-    console.log('assignword 1');
+    var text = this.add.text(0, 0, 'TESTING', {
+        font: '12px Arial',
+        fill: '#FFFFF'
+    });
+    ufoShip.addChild(text);
     assignWord(fancyEnemy);
-    console.log('assignword 2');
     assignWord(fancyEnemy2);
-    console.log('assignword 3');
     assignWord(fancyEnemy3);
-    console.log('assignword 4');
-    console.log(ufoShip);
-    console.log(fancyEnemy);
-    console.log(fancyEnemy2);
-    console.log(fancyEnemy3);
 }
 function update() {
-    randomY = Phaser.Math.Between(0, config.height);
     moveShips(ufoShip, 0.5);
     moveShips(fancyEnemy, 0.7);
     moveShips(fancyEnemy2, 0.9);
@@ -124,6 +113,7 @@ function update() {
     scoreField.setText('Score : ' + score);
 }
 function moveShips(ship, speed) {
+    randomY = Phaser.Math.Between(0, config.height);
     if (ship.x > -40) {
         ship.x -= speed;
     } else {
@@ -139,7 +129,11 @@ function assignWord(ship) {
     } else {
         for (word in activeWords) {
             while (activeWords[word][0] === words[randomWordIndex][0]) {
-                randomWordIndex += 5;
+                if (randomWordIndex === words.length - 1) {
+                    randomWordIndex = 0;
+                } else {
+                    randomWordIndex += 1;
+                }
             }
         }
         ship.word = words[randomWordIndex];
