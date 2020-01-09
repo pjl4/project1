@@ -1,4 +1,4 @@
-//some sprites taken from phaser.io
+//some sprites taken from https://gamedevelopment.tutsplus.com/articles/enjoy-these-totally-free-space-based-shoot-em-up-sprites--gamedev-2368
 //some sprites from https://github.com/ansimuz/getting-started-with-phaser
 
 var config = {
