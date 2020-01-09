@@ -19,7 +19,6 @@ var config = {
 };
 var game = new Phaser.Game(config);
 var player;
-var enimies = [];
 var randomY = Phaser.Math.Between(0, config.height);
 var scoreField;
 var score = 0;
