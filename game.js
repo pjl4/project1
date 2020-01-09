@@ -342,7 +342,7 @@ function handleKeyPress(passedGroup) {
         newText = '';
         //empty group
         passedGroup.clear(true);
-        score += 5;
+        score += 1;
     }
 }
 function makeGroup(passedGroup, ship, text) {
