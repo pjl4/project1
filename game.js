@@ -164,10 +164,77 @@ function create() {
     this.input.keyboard.on('keydown', keyDown);
 }
 function update() {
-    moveGroup(group, 0.5);
-    moveGroup(group1, 0.7);
-    moveGroup(group2, 0.9);
-    moveGroup(group3, 0.4);
+    if (group.getChildren().length > 0) {
+        moveGroup(group, 0.5);
+    } else {
+        ufoShip = this.add.sprite(800, randomY, 'enemy');
+        //assign word
+        assignWord(ufoShip);
+        //get text
+        text = this.add.text(ufoShip.x - 30, ufoShip.y - 10, ufoShip.word, {
+            font: '18px Arial',
+            fill: '#ff0000'
+        });
+        //repopulate group
+        makeGroup(group, ufoShip, text);
+    }
+    if (group1.getChildren().length > 0) {
+        moveGroup(group1, 0.7);
+    } else {
+        fancyEnemy = this.add.sprite(800, randomY, 'fancyEnemy');
+        //assign word
+        assignWord(fancyEnemy);
+        //get text
+        text = this.add.text(
+            fancyEnemy.x - 30,
+            fancyEnemy.y - 10,
+            fancyEnemy.word,
+            {
+                font: '18px Arial',
+                fill: '#ff0000'
+            }
+        );
+        //repopulate group
+        makeGroup(group1, fancyEnemy, text);
+    }
+    if (group2.getChildren().length > 0) {
+        moveGroup(group2, 0.9);
+    } else {
+        fancyEnemy2 = this.add.sprite(800, randomY, 'fancyEnemy2');
+        //assign word
+        assignWord(fancyEnemy2);
+        //get text
+        text = this.add.text(
+            fancyEnemy2.x - 30,
+            fancyEnemy2.y - 10,
+            fancyEnemy2.word,
+            {
+                font: '18px Arial',
+                fill: '#ff0000'
+            }
+        );
+        //repopulate group
+        makeGroup(group2, fancyEnemy2, text);
+    }
+    if (group3.getChildren().length > 0) {
+        moveGroup(group3, 0.4);
+    } else {
+        fancyEnemy3 = this.add.sprite(800, randomY, 'fancyEnemy3');
+        //assign word
+        assignWord(fancyEnemy3);
+        //get text
+        text = this.add.text(
+            fancyEnemy3.x - 30,
+            fancyEnemy3.y - 10,
+            fancyEnemy3.word,
+            {
+                font: '18px Arial',
+                fill: '#ff0000'
+            }
+        );
+        //repopulate group
+        makeGroup(group3, fancyEnemy3, text);
+    }
     scoreField.setText('Score : ' + score);
     if (newText) {
         if (typedWord) {
@@ -180,13 +247,25 @@ function update() {
                     }
                     break;
                 case group1.children.entries[0].word:
-                    group1.children.entries[1].setText(newText);
+                    if (newText.length === 0) {
+                        group1.children.entries[1].setText();
+                    } else {
+                        group1.children.entries[1].setText(newText);
+                    }
                     break;
                 case group2.children.entries[0].word:
-                    group2.children.entries[1].setText(newText);
+                    if (newText.length === 0) {
+                        group2.children.entries[1].setText();
+                    } else {
+                        group2.children.entries[1].setText(newText);
+                    }
                     break;
                 case group3.children.entries[0].word:
-                    group3.children.entries[1].setText(newText);
+                    if (newText.length === 0) {
+                        group3.children.entries[1].setText();
+                    } else {
+                        group3.children.entries[1].setText(newText);
+                    }
                     break;
             }
         }
@@ -266,19 +345,7 @@ function handleKeyPress(passedGroup) {
         typedWord = '';
         newText = '';
         //empty group
-        passedGroup.clear();
-        //create ship
-        ufoShip = this.add.sprite(800, randomY, 'enemy');
-        //assign word
-        assignWord(ufoShip);
-        //get text
-        text = this.add.text(ufoShip.x - 30, ufoShip.y - 10, ufoShip.word, {
-            font: '18px Arial',
-            fill: '#ff0000'
-        });
-        //repopulate group
-        makeGroup(passedGroup, ufoShip, text);
-        //increase score
+        passedGroup.clear(true);
         score += 5;
     }
 }
