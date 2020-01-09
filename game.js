@@ -56,10 +56,10 @@ function preload() {
 function create() {
     //add all sprites
     this.add.image(0, 0, 'background');
-    randomY = Phaser.Math.Between(0, config.height - 150);
+    randomY = Phaser.Math.Between(50, config.height - 150);
     ufoShip = this.add.sprite(800, randomY, 'enemy');
-    fancyEnemy = this.add.sprite(800, randomY + 50, 'fancyEnemy');
-    fancyEnemy2 = this.add.sprite(800, randomY + 20, 'fancyEnemy2');
+    fancyEnemy = this.add.sprite(800, randomY + 60, 'fancyEnemy');
+    fancyEnemy2 = this.add.sprite(800, randomY + 30, 'fancyEnemy2');
     fancyEnemy3 = this.add.sprite(800, randomY - 40, 'fancyEnemy3');
     player = this.add.sprite(25, 150, 'player');
 
@@ -165,7 +165,7 @@ function create() {
 }
 function update() {
     if (group.getChildren().length > 0) {
-        moveGroup(group, 0.5);
+        moveGroup(group, 0.8);
     } else {
         ufoShip = this.add.sprite(800, randomY, 'enemy');
         //assign word
@@ -179,7 +179,7 @@ function update() {
         makeGroup(group, ufoShip, text);
     }
     if (group1.getChildren().length > 0) {
-        moveGroup(group1, 0.7);
+        moveGroup(group1, 1.1);
     } else {
         fancyEnemy = this.add.sprite(800, randomY, 'fancyEnemy');
         //assign word
@@ -198,7 +198,7 @@ function update() {
         makeGroup(group1, fancyEnemy, text);
     }
     if (group2.getChildren().length > 0) {
-        moveGroup(group2, 0.9);
+        moveGroup(group2, 1);
     } else {
         fancyEnemy2 = this.add.sprite(800, randomY, 'fancyEnemy2');
         //assign word
@@ -217,7 +217,7 @@ function update() {
         makeGroup(group2, fancyEnemy2, text);
     }
     if (group3.getChildren().length > 0) {
-        moveGroup(group3, 0.4);
+        moveGroup(group3, 1.3);
     } else {
         fancyEnemy3 = this.add.sprite(800, randomY, 'fancyEnemy3');
         //assign word
@@ -285,26 +285,22 @@ function keyDown(evt) {
     if (typedWord === '') {
         switch (key) {
             case group.children.entries[1]._text[0]:
-                console.log('matched group 1');
                 //call function to handle
                 handleKeyPress(group);
                 typedWord = group.children.entries[0].word;
                 break;
             case group1.children.entries[1]._text[0]:
                 //call function to handle
-                console.log('matched group 2');
                 handleKeyPress(group1);
                 typedWord = group1.children.entries[0].word;
                 break;
             case group2.children.entries[1]._text[0]:
                 //call function to handle
-                console.log('matched group 3');
                 handleKeyPress(group2);
                 typedWord = group2.children.entries[0].word;
                 break;
             case group3.children.entries[1]._text[0]:
                 //call function to handle
-                console.log('matched group 4');
                 handleKeyPress(group3);
                 typedWord = group3.children.entries[0].word;
                 break;
@@ -342,6 +338,7 @@ function handleKeyPress(passedGroup) {
     if (newText.length > 1) {
         newText = newText.substr(1);
     } else {
+        activeWords.splice(activeWords.indexOf(typedWord), 1);
         typedWord = '';
         newText = '';
         //empty group
