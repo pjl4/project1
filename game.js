@@ -24,6 +24,7 @@ var randomY = Phaser.Math.Between(0, config.height);
 var scoreField;
 var score = 0;
 var activeWords = [];
+var typedWord = '';
 var group;
 var group1;
 var group2;
@@ -112,7 +113,7 @@ function create() {
     assignWord(ufoShip);
     //ship 1 get word text
     let text = this.add.text(ufoShip.x - 30, ufoShip.y - 10, ufoShip.word, {
-        font: '15px Arial',
+        font: '18px Arial',
         fill: '#ff0000'
     });
     //ship 1 make group
@@ -125,7 +126,7 @@ function create() {
         fancyEnemy.y - 10,
         fancyEnemy.word,
         {
-            font: '15px Arial',
+            font: '18px Arial',
             fill: '#ff0000'
         }
     );
@@ -139,7 +140,7 @@ function create() {
         fancyEnemy2.y - 10,
         fancyEnemy2.word,
         {
-            font: '15px Arial',
+            font: '18px Arial',
             fill: '#ff0000'
         }
     );
@@ -153,7 +154,7 @@ function create() {
         fancyEnemy3.y - 10,
         fancyEnemy3.word,
         {
-            font: '15px Arial',
+            font: '18px Arial',
             fill: '#ff0000'
         }
     );
@@ -179,6 +180,64 @@ function update() {
 // }
 function keyDown(evt) {
     console.log(evt);
+    if (typedWord === '') {
+        let key = evt.key.toUpperCase();
+        switch (key) {
+            case group.children.entries[1]._text[0]:
+                console.log('matched group 1');
+                //call function to handle
+                handleKeyPress(group);
+                typedWord = group.children.entries[0].word;
+                break;
+            case group1.children.entries[1]._text[0]:
+                //call function to handle
+                console.log('matched group 2');
+                handleKeyPress(group1);
+                typedWord = group1.children.entries[0].word;
+                break;
+            case group2.children.entries[1]._text[0]:
+                //call function to handle
+                console.log('matched group 3');
+                handleKeyPress(group2);
+                typedWord = group2.children.entries[0].word;
+                break;
+            case group3.children.entries[1]._text[0]:
+                //call function to handle
+                console.log('matched group 4');
+                handleKeyPress(group3);
+                typedWord = group3.children.entries[0].word;
+                break;
+        }
+    } else {
+        //handle word
+        switch (typedWord) {
+            case group.children.entries[0].word:
+                handleKeyPress(group);
+                break;
+            case group1.children.entries[0].word:
+                handleKeyPress(group1);
+                break;
+            case group2.children.entries[0].word:
+                handleKeyPress(group2);
+                break;
+            case group3.children.entries[0].word:
+                handleKeyPress(group3);
+                break;
+        }
+    }
+}
+function handleKeyPress(passedGroup) {
+    if (passedGroup.children.entries[0]._text > 1) {
+        passedGroup.children.entries[0]._text = passedGroup.children.entries[0]._text.substr(
+            1
+        );
+    } else {
+        typedWord = '';
+        //empty group
+        //create ship
+        //assign word
+        //repopulate group
+    }
 }
 function makeGroup(passedGroup, ship, text) {
     passedGroup.add(ship);
@@ -194,6 +253,7 @@ function moveGroup(group, speed) {
         group.children.entries[0].y = randomY;
         group.children.entries[1].x = 790;
         group.children.entries[1].y = randomY - 10;
+        score -= 1;
     }
 }
 function assignWord(ship) {
