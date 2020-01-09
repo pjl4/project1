@@ -25,6 +25,7 @@ var scoreField;
 var score = 0;
 var activeWords = [];
 var typedWord = '';
+var newText;
 var group;
 var group1;
 var group2;
@@ -168,6 +169,28 @@ function update() {
     moveGroup(group2, 0.9);
     moveGroup(group3, 0.4);
     scoreField.setText('Score : ' + score);
+    if (newText) {
+        if (typedWord) {
+            switch (typedWord) {
+                case group.children.entries[0].word:
+                    if (newText.length === 0) {
+                        group.children.entries[1].setText();
+                    } else {
+                        group.children.entries[1].setText(newText);
+                    }
+                    break;
+                case group1.children.entries[0].word:
+                    group1.children.entries[1].setText(newText);
+                    break;
+                case group2.children.entries[0].word:
+                    group2.children.entries[1].setText(newText);
+                    break;
+                case group3.children.entries[0].word:
+                    group3.children.entries[1].setText(newText);
+                    break;
+            }
+        }
+    }
 }
 // function moveShips(ship, speed) {
 //     randomY = Phaser.Math.Between(0, config.height);
@@ -179,9 +202,8 @@ function update() {
 //     }
 // }
 function keyDown(evt) {
-    console.log(evt);
+    let key = evt.key.toUpperCase();
     if (typedWord === '') {
-        let key = evt.key.toUpperCase();
         switch (key) {
             case group.children.entries[1]._text[0]:
                 console.log('matched group 1');
@@ -212,31 +234,52 @@ function keyDown(evt) {
         //handle word
         switch (typedWord) {
             case group.children.entries[0].word:
-                handleKeyPress(group);
+                if (key === group.children.entries[1]._text[0]) {
+                    handleKeyPress(group);
+                }
                 break;
             case group1.children.entries[0].word:
-                handleKeyPress(group1);
+                if (key === group1.children.entries[1]._text[0]) {
+                    handleKeyPress(group1);
+                }
                 break;
             case group2.children.entries[0].word:
-                handleKeyPress(group2);
+                if (key === group2.children.entries[1]._text[0]) {
+                    handleKeyPress(group2);
+                }
                 break;
             case group3.children.entries[0].word:
-                handleKeyPress(group3);
+                if (key === group3.children.entries[1]._text[0]) {
+                    handleKeyPress(group3);
+                }
                 break;
         }
     }
 }
 function handleKeyPress(passedGroup) {
-    if (passedGroup.children.entries[0]._text > 1) {
-        passedGroup.children.entries[0]._text = passedGroup.children.entries[0]._text.substr(
-            1
-        );
+    if (typeof newText === 'undefined' || newText === '') {
+        newText = passedGroup.children.entries[0].word;
+    }
+    if (newText.length > 1) {
+        newText = newText.substr(1);
     } else {
         typedWord = '';
+        newText = '';
         //empty group
+        passedGroup.clear();
         //create ship
+        ufoShip = this.add.sprite(800, randomY, 'enemy');
         //assign word
+        assignWord(ufoShip);
+        //get text
+        text = this.add.text(ufoShip.x - 30, ufoShip.y - 10, ufoShip.word, {
+            font: '18px Arial',
+            fill: '#ff0000'
+        });
         //repopulate group
+        makeGroup(passedGroup, ufoShip, text);
+        //increase score
+        score += 5;
     }
 }
 function makeGroup(passedGroup, ship, text) {
